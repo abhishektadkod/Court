@@ -44,7 +44,7 @@ export default class Login extends Component {
       })
       .catch(error => {
         console.log("registration error", error);
-        if(error.response.status===420)
+        //if(error.response.status===420)
         this.setState({
             registrationErrors:"Enter correct Password!"
           });

@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import Zoom from 'react-reveal/Zoom';
+import {Fade} from 'react-reveal';
 
 export default class Registration extends Component {
   constructor(props) {
@@ -57,40 +59,68 @@ export default class Registration extends Component {
 
   render() {
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
+      <div className="container" style={{}}>
+        
+         
+        <Zoom>
+        <br/><br/><br/><br/>
+        
+        <div className="row" style={{color:"#4a4538",backgroundColor:"#edebe6",fontSize:"30px",fontWeight:"lighter"}}>
+          
+          <div className="col-md-2"></div>
+          <div className="col-md-8"><br/>
+          <Fade top opposite cascade>
+            <div className="display-4">Registration Form</div><br/>
+            </Fade>
+        <form className="mx-auto d-block" onSubmit={this.handleSubmit}>
+        <div className="form-group">
+        <label>Username:</label>
           <input
             type="text"
             name="user"
-            placeholder="username"
+            className="form-control"
+            placeholder="Enter username"
             value={this.state.email}
             onChange={this.handleChange}
             required
           />
+          </div>
 
+          <div className="form-group">
+            <label>Password:</label>
           <input
             type="text"
             name="password"
-            placeholder="Password"
+            className="form-control"
+            placeholder="Enter password"
             value={this.state.password}
             onChange={this.handleChange}
             required
           />
+          </div>
 
+          <div className="form-group">
+            <label>Password confirmation:</label>
           <input
             type="text"
             name="password_confirmation"
-            placeholder="Password confirmation"
+            className="form-control"
+            placeholder="Re-enter password"
             value={this.state.password_confirmation}
             onChange={this.handleChange}
             required
           />
+          </div>
 
-          <button type="submit">Register</button><br/>
+          <button className="btn btn-primary" type="submit">Register</button><br/>
 
-          <div className="btn btn-info">{this.state.registrationErrors}</div>
+          <h2><span className="badge badge-secondary">{this.state.registrationErrors}</span></h2>
+          <br/>
 
         </form>
+        </div>
+        </div>
+        </Zoom>
       </div>
     );
   }

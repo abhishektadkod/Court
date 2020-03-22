@@ -1,19 +1,39 @@
 import React, { Component } from 'react'
-import Sidebar from './sidebar'
-import Home from './home'
+import axios from 'axios';
 
 class Dashboard extends Component {
+    constructor(props) {
+        super(props)
+    
+        this.state = {
+             
+        }
+        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    }
+    
+    handleLogoutClick() {
+        
+        axios
+          .get("http://localhost:4000/client/logout", { withCredentials: true })
+          .then(response => {
+            this.props.loggedOut();
+            this.props.history.push("/");
+          })
+          .catch(error => {
+            console.log("logout error", error);
+          });
+      }
     render() {
         return (
             <div>
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col-md-2 bg-dark">
-                            <Sidebar/>
-                        </div>
-                        <div class="col-md-10">
-                            <Home/>
-                        </div>
+                <div className="container-fluid">
+                    <div className="">
+                        
+                        <h1>Status: {this.props.loggedInStatus}</h1><br/>
+                        
+                        <h1>Username: {this.props.User.username}</h1><br/>
+
+                        <div className="btn btn-danger" onClick={this.handleLogoutClick}>LOGOUT</div>
                     </div>
                 </div>
             </div>

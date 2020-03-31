@@ -1,0 +1,65 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\Lenovo\scoop\apps\yarn\current\Yarn\bin\yarn.js add @babel/plugin-transform-react-jsx
+
+PATH: 
+  C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\iCLS\;C:\Program Files\Intel\Intel(R) Management Engine Components\iCLS\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files\Intel\Intel(R) Management Engine Components\DAL;C:\Program Files (x86)\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\Intel\Intel(R) Management Engine Components\IPT;C:\Program Files\nodejs\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\MongoDB\Server\4.2\bin;C:\Program Files\Git\cmd;C:\Users\Lenovo\Desktop\SD PROJECT\Court_git;C:\Users\Lenovo\scoop\apps\yarn\current\Yarn\bin;C:\Users\Lenovo\scoop\apps\yarn\current\global\node_modules\.bin;C:\Users\Lenovo\scoop\shims;C:\Users\Lenovo\Anaconda3;C:\Users\Lenovo\Anaconda3\Library\mingw-w64\bin;C:\Users\Lenovo\Anaconda3\Library\usr\bin;C:\Users\Lenovo\Anaconda3\Library\bin;C:\Users\Lenovo\Anaconda3\Scripts;C:\Users\Lenovo\AppData\Local\Microsoft\WindowsApps;C:\Users\Lenovo\AppData\Local\GitHubDesktop\bin;C:\Users\Lenovo\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\Lenovo\AppData\Roaming\npm;C:\Users\Lenovo\AppData\Local\Microsoft\WindowsApps;C:\Program Files\MongoDB\Server\4.2\bin;C:\Program Files\heroku\bin
+
+Yarn version: 
+  1.21.1
+
+Node version: 
+  10.16.3
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: ENOENT: no such file or directory, lstat 'C:\Users\Lenovo\scoop\apps\yarn\current\cache\v6\npm-babel-runtime-6.26.0-965c7058668e82b55d7bfe04ff2337bc8b5647fe-integrity\node_modules\babel-runtime\.npmignore'
+
+npm manifest: 
+  {
+    "name": "court",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+      "@testing-library/jest-dom": "^4.2.4",
+      "@testing-library/react": "^9.5.0",
+      "@testing-library/user-event": "^7.2.1",
+      "axios": "^0.19.2",
+      "bootstrap": "^4.4.1",
+      "react": "^16.13.0",
+      "react-bootstrap": "^1.0.0-beta.17",
+      "react-dom": "^16.13.0",
+      "react-icons": "^3.9.0",
+      "react-reveal": "^1.2.2",
+      "react-router-dom": "^5.1.2",
+      "react-scripts": "3.4.0"
+    },
+    "scripts": {
+      "start": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

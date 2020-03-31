@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import Register from './Dashboard/register';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -23,6 +24,7 @@ class Dashboard extends Component {
             console.log("logout error", error);
           });
       }
+      
     render() {
         return (
             <div>
@@ -32,6 +34,9 @@ class Dashboard extends Component {
                         <h1>Status: {this.props.loggedInStatus}</h1><br/>
                         
                         <h1>Username: {this.props.User.username}</h1><br/>
+                        {this.props.location.pathname}
+
+                        <Register/>
 
                         <div className="btn btn-danger" onClick={this.handleLogoutClick}>LOGOUT</div>
                     </div>

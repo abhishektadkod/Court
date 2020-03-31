@@ -7,6 +7,7 @@ import Home from './components/home';
 import Registration from './components/registration';
 import Login from './components/login';
 import axios from 'axios';
+import Notify from './components/Dashboard/notify';
 
 
 
@@ -25,12 +26,12 @@ class App extends Component {
     this.setState({
       loggedInStatus: "LOGGED_IN",
     });
+
   }
 
   handleLogout() {
-    
     this.setState({
-      loggedInStatus: "NOT_LOGGED_IN",
+      loggedInStatus: "NOT_LOGGED_IN",  
       user:{}
     });
   }
@@ -39,6 +40,7 @@ class App extends Component {
     axios
       .get("http://localhost:4000/client/logged", { withCredentials: true })
       .then(response => {
+
         if (
           response.data.logged_in &&
           this.state.loggedInStatus === "NOT_LOGGED_IN"
@@ -47,7 +49,7 @@ class App extends Component {
           console.log(response);
           this.setState({
             loggedInStatus: "LOGGED_IN",
-            user: response.data.user[0]
+            user: response.data.user
           });
         } else if (
           !response.data.logged_in &&
@@ -76,21 +78,21 @@ class App extends Component {
       <div className="app" >
         
         <BrowserRouter>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
           </button>
-          <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <a class="navbar-brand" href="#"><div className="display-4">COURT CASE MANAGEMENT</div></a>
-            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li class="nav-item active">
+          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+            <div className="navbar-brand" ><div className="display-4">COURT CASE MANAGEMENT</div></div>
+            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+              <li className="nav-item active">
               <div className="nav-link"><Link to="/">Home</Link></div>
               </li>
-              <li class="nav-item">
+              <li className="nav-item">
                 
               <div className="nav-link"><Link to="/register">Register</Link></div>
               </li>
-              <li class="nav-item">
+              <li className="nav-item">
               <div className="nav-link"><Link to="/login">Login</Link></div>
               </li>
             </ul>
@@ -164,36 +166,37 @@ class App extends Component {
     {
       return (
         <div className="app" >
+       
           
           <BrowserRouter>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
+          <nav className="navbar navbar-expand-lg navbar-light bg-light">
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+              <span className="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-              <a class="navbar-brand" href="#"><div className="display-4">COURT CASE MANAGEMENT</div></a>
-              <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li class="nav-item active">
+            <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+              <div className="navbar-brand"><div className="display-4">COURT CASE MANAGEMENT</div></div>
+              <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li className="nav-item active">
                 <div className="nav-link"><Link to="/dash">Home</Link></div>
                 </li>
 
-                <li class="nav-item">
+                <li className="nav-item">
                 <div className="nav-link"><Link to="/dash">My profile</Link></div>
                 </li>
 
-                <li class="nav-item">
-                <div className="nav-link"><Link to="/dash">Register a case</Link></div>
+                <li className="nav-item">
+                <div className="nav-link"><Link to="/case">Register a case</Link></div>
                 </li>
 
-                <li class="nav-item">
+                <li className="nav-item">
                 <div className="nav-link"><Link to="/dash">Registered cases</Link></div>
                 </li>
 
-                <li class="nav-item">
+                <li className="nav-item">
                 <div className="nav-link"><Link to="/dash">History of hearings</Link></div>
                 </li>
 
-                <li class="nav-item">
+                <li className="nav-item">
                 <div className="nav-link" onClick={this.handleLogout}>Logout</div>
                 </li>
               </ul>
@@ -202,33 +205,25 @@ class App extends Component {
           </nav>
                
             <Switch>
-          
+
+
             <Route
                 exact
-                path={"/register"}
+                path={"/dash"}
                 render={props => (
-                  <Registration
+                  <Notify
                     {...props}
-                    handleLogin={this.handleLogin}
+                    loggedInStatus={this.state.loggedInStatus}
+                    User={this.state.user}
+                    loggedOut={this.handleLogout}
                   />
                 )}
               />
-  
-            <Route
-                exact
-                path={"/login"}
-                render={props => (
-                  <Login
-                    {...props}
-                    handleLogin={this.handleLogin}
-                  />
-                )}
-              />   
-  
-             
+
+               
               <Route
                 exact
-                path={"/dash"}
+                path={"/case"}
                 render={props => (
                   <Dashboard
                     {...props}
@@ -238,25 +233,7 @@ class App extends Component {
                   />
                 )}
               />
-  
-              <Route
-                exact
-                path={"/"}
-                render={props => (
-                  <Home
-                    {...props}
-                    loggedInStatus={this.state.loggedInStatus}
-                  />
-                )}
-              />   
-               
-  
-             
-        
-        
-  
-             
-             
+
             </Switch>
           </BrowserRouter>
           

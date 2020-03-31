@@ -2,14 +2,15 @@ import React, { Component } from 'react'
 import { MdAccountBalance } from "react-icons/md";
 
 
-export class Home extends Component {
+class Home extends Component {
     render() {
+
         return (
             <div>
                 <div style={{textAlign:'center'}}>
-                <MdAccountBalance color='' size='30rem'/>
+                <MdAccountBalance color='purple' size='520px'/>
         
-                <div className="display-4">COURT CASE MANAGEMENT</div>
+              
                 <br/><br/>
                 <button className="btn btn-outline-primary btn-lg" onClick={()=>this.props.history.push("/register")}>GET STARTED!</button>
                 </div>
@@ -18,9 +19,9 @@ export class Home extends Component {
                 
                  {this.props.loggedInStatus}  
                  &nbsp;
-                <div className="btn btn-primary" onClick={()=>this.props.history.push("/register")}>REGISTER</div>
+                {/* <div className="btn btn-primary" onClick={()=>this.props.history.push("/register")}>REGISTER</div>
                 &nbsp;
-                <div className="btn btn-primary" onClick={()=>this.props.history.push("/login")}>LOGIN</div>
+                <div className="btn btn-primary" onClick={()=>this.props.history.push("/login")}>LOGIN</div> */}
             </div>
         )
     }

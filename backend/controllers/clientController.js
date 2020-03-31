@@ -1,62 +1,69 @@
-let Todo = require('../models/client.model');
-let logged=0
-let user=[]
+//https://codeforgeek.com/manage-session-using-node-js-express-4/
+//req.params.id
+let Client = require('../models/client.model');
+let user="000000000000";
 
 //client list
 exports.client_list = function(req, res) {
 	
-    Todo.find(function(err, todos) {
+    Client.find(function(err, response) {
         if (err) {
             console.log(err);
         } else {
-            res.json(todos);
+            res.json(response);
         }
     });
 };
 
 //logged
 exports.client_logged = function(req, res) {
-    res.json({"logged_in":logged,"user":user[0]});
+    
+    Client.findById({"_id" : user},function(err, client) {
+        if (err) {
+            console.log(err);
+        } else {
+            if(!client){
+                res.status(420).json("User doesn't exist")
+                console.log(client);
+            }
+            else
+            {
+            res.json({"logged_in":client.logged,"user":client});
+            console.log(user);
+            }
+        }
+    });
+    
 };
 
 
 //logout
 exports.client_logout = function(req, res) {
-	logged=0;
-	user=[];
-    res.json({"logged_in":logged,"user":user[0]});
-};
+    Client.updateOne({_id:user},{logged:0},
+        function(err, resp) {
+                if (err) {
+                    res.json(err);
+                } else {
+                    user="000000000000"
+                    res.json("Logged Out successfully");
+                }
+            });
+         };
+	
+   
+
 
 //Register client
 exports.client_register = function(req, res) {
 	console.log(req.method,req.url)
-    let todo = new Todo(req.body);
+    let client = new Client(req.body);
 	if(req.body.pass==req.body.repass){
-		todo.save()
-        .then(todo => {
-            logged=1;
-            user.push(todo);
-            res.status(200).json({'Client': 'Client added successfully'});
-        })
-        .catch(err => {
-            res.status(400).send('adding new client failed');
-        });
-	}
-	else{
-	res.status(420).json({'Client':'Password doesnt match'});
-	}
-};
-
-//Client Registeration
-exports.client_add = function(req, res) {
-	console.log(req.method,req.url)
-    let todo = new Todo(req.body);
-	if(req.body.pass==req.body.repass){
-		todo.save()
-        .then(todo => {
-            logged=1;
-            user.push(todo);
-            res.status(200).json({'Client': 'Client added successfully'});
+        client.logged=1;
+		client.save()
+        .then(resp=> {
+            user=client._id
+            res.status(200).json(resp);
+            console.log(resp);
         })
         .catch(err => {
             res.status(400).send('adding new client failed');
@@ -70,21 +77,27 @@ exports.client_add = function(req, res) {
 
 //Client login validation
 exports.client_login = function(req, res) {
-    Todo.find({username:req.body.username,pass:req.body.pass},function(err, todos) {
-       if (err) {
-           res.json(err);
-           
-       } else {
-           if(todos.length==0){
-               res.status(420).json("User doesn't exist")
-               console.log(todos);
-           }
-           else
-           {
-               logged=1;
-               user.push(todos);
-               res.json(user[0]);
-           }
-       }
-   });
-};
+Client.updateOne({username:req.body.username,pass:req.body.pass},
+    {logged:1},function(err, resp) {
+        if (err) {
+            res.json(err);
+        } else {
+                Client.find({username:req.body.username,pass:req.body.pass},function(err, response) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        if(response.length==0){
+                            res.status(420).json("User doesn't exist")
+                            console.log(response);
+                        }
+                        else
+                        {
+                        user=response[0]._id;
+                        res.json(response[0]);
+                        console.log(user)
+                        }
+                    }
+                });
+        }
+    });
+ };

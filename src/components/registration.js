@@ -11,6 +11,7 @@ export default class Registration extends Component {
       username: "",
       password: "",
       password_confirmation: "",
+      email:"",
       registrationErrors: ""
     };
 
@@ -26,13 +27,14 @@ export default class Registration extends Component {
 
   handleSubmit(event) {
       
-    const { user, password, password_confirmation } = this.state;
+    const { user, password, email ,password_confirmation} = this.state;
 
     axios
         .post('http://127.0.0.1:4000/client/add', 
             {
                 "username":user,
                 "pass":password,
+                "email":email,
                 "repass":password_confirmation
             }
 			,
@@ -80,11 +82,25 @@ export default class Registration extends Component {
             name="user"
             className="form-control"
             placeholder="Enter username"
+            value={this.state.user}
+            onChange={this.handleChange}
+            required
+          />
+          </div>
+
+          <div className="form-group">
+        <label>Email:</label>
+          <input
+            type="text"
+            name="email"
+            className="form-control"
+            placeholder="Enter email"
             value={this.state.email}
             onChange={this.handleChange}
             required
           />
           </div>
+
 
           <div className="form-group">
             <label>Password:</label>

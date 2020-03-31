@@ -19,7 +19,10 @@ app.use(cors({origin:'http://localhost:3000',credentials: true,}))
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/'+court, { useNewUrlParser: true });
+mongoose.connect('mongodb://127.0.0.1:27017/'+court,  {
+    useCreateIndex: true,
+    useNewUrlParser: true
+  });
 const connection = mongoose.connection;
 
 connection.once('open', function() {
@@ -28,7 +31,7 @@ connection.once('open', function() {
 
 
 app.use('/client', clientRouter);
-app.use('/', lawyerRouter);
+app.use('/lawyer', lawyerRouter);
 
 
 app.listen(PORT, function() {

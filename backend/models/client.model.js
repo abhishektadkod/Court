@@ -10,10 +10,15 @@ let Client = new Schema({
         type: String
 		
     },
+    email:{
+        type:String,
+        unique:true
+    },
     logged: {
         type: Number
 		
-    }
+    },
+    updated: { type: Date, default: Date.now }
 });
 
 module.exports = mongoose.model('Client', Client);

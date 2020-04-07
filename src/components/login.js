@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import {Fade} from 'react-reveal';
+import {Zoom} from 'react-reveal';
 
 export default class Login extends Component {
   constructor(props) {
@@ -55,28 +56,41 @@ export default class Login extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
+        <Zoom>
+        <br/><br/><br/><br/>
+      <div  className="row" style={{color:"#4a4538",backgroundColor:"#edebe6",fontSize:"30px",fontWeight:"lighter"}}>
+      <div className="col-md-2"></div>
+      <div className="col-md-8"><br/>
         <Fade top opposite cascade>
             <div className="display-4">Login Form</div><br/>
-            </Fade>
-        <form onSubmit={this.handleSubmit}>
+        </Fade>
+        <form className="mx-auto d-block" onSubmit={this.handleSubmit}>
+        <div className="form-group">
+        <label>Username:</label>
           <input
             type="text"
             name="user"
             placeholder="Enter username"
+            className="form-control"
             value={this.state.email}
             onChange={this.handleChange}
+            ref={input => input && input.focus()}
             required
-          /><br/>
-
+          />
+          </div><br/>
+        <div className="form-group">
+        <label>Password:</label>
           <input
             type="text"
             name="password"
             placeholder="Enter password"
+            className="form-control"
             value={this.state.password}
             onChange={this.handleChange}
             required
-          /><br/>
+          />
+          </div><br/>
 
           
 
@@ -86,6 +100,10 @@ export default class Login extends Component {
 
         <h2><span className="badge badge-secondary">{this.state.registrationErrors}</span></h2>
         </form>
+        <br/>
+      </div>
+      </div>
+      </Zoom>
       </div>
     );
   }

@@ -25,7 +25,7 @@ export class Notify extends Component {
         return (
             <div className="container p-3 my-3 text-white mx-auto">
                 <div style={{textAlign:"center"}}>
-               <div className="btn btn-outline-info"><div className="display-4"> No Notifications!</div></div>
+               <div className="btn btn-outline-info"><div className="display-4"> Welcome to our App!</div></div>
                </div>
                {this.props.location.pathname}
             </div>

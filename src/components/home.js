@@ -1,10 +1,15 @@
 import React, { Component } from 'react'
 import { MdAccountBalance } from "react-icons/md";
 
-
 class Home extends Component {
+
+    fun=()=>{
+        //this.props.animation();
+        this.props.history.push("/register");
+    }
     render() {
 
+        
         return (
             <div>
                 <div style={{textAlign:'center'}}>
@@ -12,12 +17,12 @@ class Home extends Component {
         
               
                 <br/><br/>
-                <button className="btn btn-outline-primary btn-lg" onClick={()=>this.props.history.push("/register")}>GET STARTED!</button>
+                <button className="btn btn-outline-primary btn-lg" onClick={this.fun}>GET STARTED!</button>
                 </div>
 
                 
                 
-                 {this.props.loggedInStatus}  
+                   
                  &nbsp;
                 {/* <div className="btn btn-primary" onClick={()=>this.props.history.push("/register")}>REGISTER</div>
                 &nbsp;

@@ -29,13 +29,13 @@ router.get('/type/:id', function(req, res, next) {
 
 //Add new lawyer in Court database
 router.post('/', function(req, res) {
-	console.log(req.method,req.url)
+	console.log(req.method,req.url);
     let client = new Lawyer(req.body);
 
         client.logged=1;
-		    client.save()
+		client.save()
         .then(resp=> {
-            user=client._id
+            user=client._id;
             res.status(200).json(resp);
             console.log(resp);
         })

@@ -1,6 +1,8 @@
 //https://codeforgeek.com/manage-session-using-node-js-express-4/
 //req.params.id
 let Client = require('../models/client.model');
+let Case = require('../models/case.model')
+
 let user="000000000000";
 
 //client list
@@ -101,3 +103,44 @@ Client.updateOne({username:req.body.username,pass:req.body.pass},
         }
     });
  };
+
+ //Adding a case
+exports.add_case= function(req, res) {
+ 
+    let cases = new Case(req.body);
+        cases.save()
+        .then(resp=> {
+  
+            res.status(200).json(resp);
+            console.log(resp);
+        })
+        .catch(err=>{
+            res.status(400).send('adding a case failed');
+            console.log(err);
+        });
+   
+ };
+ 
+ //Adding a lawyer
+exports.add_lawyer = function(req, res) {
+    Case.updateOne({client_id:req.body.client_id,},
+        { $push: {lawyer_id:req.body.lawyer_id}},function(err, resp) {
+            if (err) {
+                res.json(err);
+            } else {
+                    res.json("updated!");
+            }
+        });
+     };
+
+exports.get_case = function(req, res) {
+	
+    Case.find(function(err, response) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.json(response);
+        }
+    });
+};
+

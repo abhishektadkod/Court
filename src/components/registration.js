@@ -43,6 +43,7 @@ export default class Registration extends Component {
       .then(response => {
         if (response.status === 200) {
             this.props.handleLogin();
+            this.props.animation();
             this.props.history.push("/dash");
             
         }
@@ -84,6 +85,7 @@ export default class Registration extends Component {
             placeholder="Enter username"
             value={this.state.user}
             onChange={this.handleChange}
+            ref={input => input && input.focus()}
             required
           />
           </div>

@@ -24,6 +24,13 @@ router.post('/add', client_controller.client_register);
 // POST to add client
 router.post('/login', client_controller.client_login);  
 
+//POST to add a case
+router.post('/case', client_controller.add_case);
 
+//POST to add a case
+router.get('/case', client_controller.get_case);
+
+//POST to add a lawyer to a case
+router.post('/advocate', client_controller.add_lawyer);
 
 module.exports = router;

@@ -1,25 +1,40 @@
 import './App.css';
 import ReactDOM from 'react-dom'
 import React, { Component } from "react";
+import axios from 'axios';
 import { BrowserRouter, Switch, Route ,Link} from "react-router-dom";
-import Dashboard from './components/dashboard';
+import Confetti from 'react-confetti'
+
+
 import Home from './components/home';
 import Registration from './components/registration';
 import Login from './components/login';
-import axios from 'axios';
+import Dashboard from './components/dashboard';
 import Notify from './components/Dashboard/notify';
+import Viewcase from './components/Dashboard/ViewCase';
 
 
 
 class App extends Component {
+
   constructor() {
     super()
-    this.state = {      
+    this.state = {
       loggedInStatus: "NOT_LOGGED_IN",
-      user: {}
+      user: {},
+      on: false,
     };
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.toggle = this.toggle.bind(this);
+  }
+
+  toggle = () => {
+    this.setState({ on: true });
+    setTimeout(function() { 
+        this.setState({on: false}) 
+    }.bind(this), 4000)
   }
 
   handleLogin() {
@@ -31,9 +46,23 @@ class App extends Component {
 
   handleLogout() {
     this.setState({
-      loggedInStatus: "NOT_LOGGED_IN",  
+      loggedInStatus: "NOT_LOGGED_IN",
       user:{}
     });
+  }
+
+  handleLogoutClick() {
+        
+    axios
+      .get("http://localhost:4000/client/logout", { withCredentials: true })
+      .then(response => {
+        this.handleLogout();
+        window.location.href="/";
+        
+      })
+      .catch(error => {
+        console.log("logout error", error);
+      });
   }
 
   checkLoginStatus() {
@@ -45,7 +74,7 @@ class App extends Component {
           response.data.logged_in &&
           this.state.loggedInStatus === "NOT_LOGGED_IN"
         ) {
-         
+
           console.log(response);
           this.setState({
             loggedInStatus: "LOGGED_IN",
@@ -67,185 +96,205 @@ class App extends Component {
       });
   }
 
-   componentDidMount() {
+  componentDidMount() {
      this.checkLoginStatus();
-   }
+     
+  }
 
   render() {
+
+    const height=window.height;
+    const width=window.width;
+    const a=(
+    <Confetti
+        width={width}
+        height={height}
+     />);
+
     if( this.state.loggedInStatus==="NOT_LOGGED_IN")
     {
-    return (
-      <div className="app" >
-        
-        <BrowserRouter>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
-          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-            <span className="navbar-toggler-icon"></span>
-          </button>
-          <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-            <div className="navbar-brand" ><div className="display-4">COURT CASE MANAGEMENT</div></div>
-            <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-              <li className="nav-item active">
-              <div className="nav-link"><Link to="/">Home</Link></div>
-              </li>
-              <li className="nav-item">
-                
-              <div className="nav-link"><Link to="/register">Register</Link></div>
-              </li>
-              <li className="nav-item">
-              <div className="nav-link"><Link to="/login">Login</Link></div>
-              </li>
-            </ul>
+      return (
+          <div className="app" >
+
+          {this.state.on?a:null}
           
+            <BrowserRouter>
+            
+              <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                  <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                  <div className="navbar-brand" ><div className="display-4">COURT CASE MANAGEMENT</div></div>
+                  <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <li className="nav-item active">
+                    <div className="nav-link"><Link to="/">Home</Link></div>
+                    </li>
+                    <li className="nav-item">
+
+                    <div className="nav-link"><Link to="/register">Register</Link></div>
+                    </li>
+                    <li className="nav-item">
+                    <div className="nav-link"><Link to="/login">Login</Link></div>
+                    </li>
+                  </ul>
+
+                </div>
+            </nav>
+
+              <Switch>
+
+              <Route
+                  exact
+                  path={"/register"}
+                  render={props => (
+                    <Registration
+                      {...props}
+                      handleLogin={this.handleLogin}
+                      animation={this.toggle}
+                    />
+                  )}
+                />
+
+              <Route
+                  exact
+                  path={"/login"}
+                  render={props => (
+                    <Login
+                      {...props}
+                      handleLogin={this.handleLogin}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path={"/dash"}
+                  render={props => (
+                    <Dashboard
+                      {...props}
+                      loggedInStatus={this.state.loggedInStatus}
+                      User={this.state.user}
+                      loggedOut={this.handleLogout}
+
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path={"/"}
+                  render={props => (
+                    <Home
+                      {...props}
+                      loggedInStatus={this.state.loggedInStatus}
+                      animation={this.toggle}
+                    />
+                  )}
+                />
+
+              </Switch>
+
+            </BrowserRouter>
+
           </div>
-        </nav>
-             
-          <Switch>
-        
-          <Route
-              exact
-              path={"/register"}
-              render={props => (
-                <Registration
-                  {...props}
-                  handleLogin={this.handleLogin}
-                />
-              )}
-            />
-
-          <Route
-              exact
-              path={"/login"}
-              render={props => (
-                <Login
-                  {...props}
-                  handleLogin={this.handleLogin}
-                />
-              )}
-            />   
-
-           
-            <Route
-              exact
-              path={"/dash"}
-              render={props => (
-                <Dashboard
-                  {...props}
-                  loggedInStatus={this.state.loggedInStatus}
-                  User={this.state.user}
-                  loggedOut={this.handleLogout}
-                />
-              )}
-            />
-
-            <Route
-              exact
-              path={"/"}
-              render={props => (
-                <Home
-                  {...props}
-                  loggedInStatus={this.state.loggedInStatus}
-                />
-              )}
-            />   
-             
-
-           
-      
-      
-
-           
-           
-          </Switch>
-        </BrowserRouter>
-        
-      </div>
-    );
+      );
     }
     else
     {
       return (
-        <div className="app" >
-       
-          
-          <BrowserRouter>
-          <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-              <div className="navbar-brand"><div className="display-4">COURT CASE MANAGEMENT</div></div>
-              <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                <li className="nav-item active">
-                <div className="nav-link"><Link to="/dash">Home</Link></div>
-                </li>
+          <div className="app" >
 
-                <li className="nav-item">
-                <div className="nav-link"><Link to="/dash">My profile</Link></div>
-                </li>
+          {this.state.on?a:null}
 
-                <li className="nav-item">
-                <div className="nav-link"><Link to="/case">Register a case</Link></div>
-                </li>
+            <BrowserRouter>
 
-                <li className="nav-item">
-                <div className="nav-link"><Link to="/dash">Registered cases</Link></div>
-                </li>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+              <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                <span className="navbar-toggler-icon"></span>
+              </button>
+              <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
+                <div className="navbar-brand"><div className="display-4">COURT CASE MANAGEMENT</div></div>
+                <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                  <li className="nav-item active">
+                  <div className="nav-link"><Link to="/dash">Home</Link></div>
+                  </li>
 
-                <li className="nav-item">
-                <div className="nav-link"><Link to="/dash">History of hearings</Link></div>
-                </li>
+                  <li className="nav-item">
+                  <div className="nav-link"><Link to="/dash">My profile</Link></div>
+                  </li>
 
-                <li className="nav-item">
-                <div className="nav-link" onClick={this.handleLogout}>Logout</div>
-                </li>
-              </ul>
-            
-            </div>
-          </nav>
-               
-            <Switch>
+                  <li className="nav-item">
+                  <div className="nav-link"><Link to="/case">Register a case</Link></div>
+                  </li>
 
+                  <li className="nav-item">
+                  <div className="nav-link"><Link to="/viewcases">Registered cases</Link></div>
+                  </li>
 
-            <Route
-                exact
-                path={"/dash"}
-                render={props => (
-                  <Notify
-                    {...props}
-                    loggedInStatus={this.state.loggedInStatus}
-                    User={this.state.user}
-                    loggedOut={this.handleLogout}
-                  />
-                )}
-              />
+                  <li className="nav-item">
+                  <div className="nav-link"><Link to="/dash">History of hearings</Link></div>
+                  </li>
 
-               
+                  <li className="nav-item">
+                  <div className="nav-link" onClick={this.handleLogoutClick}>Logout</div>
+                  </li>
+                </ul>
+
+              </div>
+            </nav>
+
+              <Switch>
+
               <Route
-                exact
-                path={"/case"}
-                render={props => (
-                  <Dashboard
-                    {...props}
-                    loggedInStatus={this.state.loggedInStatus}
-                    User={this.state.user}
-                    loggedOut={this.handleLogout}
-                  />
-                )}
-              />
+                  exact
+                  path={"/dash"}
+                  render={props => (
+                    <Notify
+                      {...props}
+                      loggedInStatus={this.state.loggedInStatus}
+                      User={this.state.user}
+                      loggedOut={this.handleLogout}
+                      animation={this.toggle}
+                    />
+                  )}
+                />
 
-            </Switch>
-          </BrowserRouter>
-          
-        </div>
+                <Route
+                  exact
+                  path={"/case"}
+                  render={props => (
+                    <Dashboard
+                      {...props}
+                      loggedInStatus={this.state.loggedInStatus}
+                      User={this.state.user}
+                      loggedOut={this.handleLogout}
+                      animation={this.toggle}
+                    />
+                  )}
+                />
+
+                <Route
+                  exact
+                  path={"/viewcases"}
+                  render={props => (
+                    <Viewcase
+                      {...props}
+                    />
+                  )}
+                />
+
+
+              </Switch>
+
+            </BrowserRouter>
+
+          </div>
       );
     }
   }
-  
 }
+
 ReactDOM.render(<App/>, document.getElementById('root'));
-
-
-
 
 export default App;

@@ -17,6 +17,9 @@ let Case = new Schema({
    case_description:{
        type: String
    },
+   selected:{
+        type:Number
+   },
    updated:{type: Date, default: Date.now}
 });
  

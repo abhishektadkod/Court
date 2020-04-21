@@ -47,7 +47,7 @@ export class Register extends Component {
             {withCredentials: true})
             .then(response=> {
                 console.log(response.data);
-                this.props.changeview();
+                this.props.changeview(response.data._id);
             })
             .catch(error=> {
                 console.log("error in adding case", error)

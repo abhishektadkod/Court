@@ -1,47 +1,50 @@
 var express = require('express');
 var router = express.Router();
-let Lawyer = require('../models/lawyer.model');
 
-
-// GET lawyer listing.
-router.get('/', function(req, res, next) {
-    Lawyer.find(function(err, response) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(response);
-        }
-    });
-});
-
+var express = require('express');
+var router = express.Router();
+ 
+// Require our controllers.
+var lawyer_controller = require('../controllers/lawyerController');
+ 
+ 
+ 
+/// All ROUTES ///
+ 
+// GET all lawyers.
+router.get('/', lawyer_controller.lawyer_list); 
 
 // GET lawyer listing based on type
-router.get('/type/:id', function(req, res, next) {
+router.get('/type/:id',lawyer_controller.lawyer_type);
  
-  Lawyer.find({type:req.params.id},function(err, response) {
-      if (err) {
-          console.log(err);
-      } else {
-          res.json(response);
-      }
-  });
-});
+// GET request for logged in information
+router.get('/logged', lawyer_controller.lawyer_logged); 
+ 
+// GET request for logout
+router.get('/logout', lawyer_controller.lawyer_logout); 
 
-//Add new lawyer in Court database
-router.post('/', function(req, res) {
-	console.log(req.method,req.url);
-    let client = new Lawyer(req.body);
+// GET lawyer listing
+router.get("/select/:id",lawyer_controller.lawyer_case_list );
 
-        client.logged=1;
-		client.save()
-        .then(resp=> {
-            user=client._id;
-            res.status(200).json(resp);
-            console.log(resp);
-        })
-        .catch(err => {
-            res.status(400).send('adding new client failed');
-        });
-});
+ //Post to add new lawyer in Court database
+router.post('/', lawyer_controller.lawyer_add);
+
+// POST to check lawyer
+router.post('/login', lawyer_controller.lawyer_login); 
+ 
+//POST to select a client case and update
+router.post('/select/:id', lawyer_controller.lawyer_case_select);
+
+//PUT to generate OTP
+router.put('/login',lawyer_controller.opt_validation);
+ 
+
+
+
+
+
+
+
+
 
 module.exports = router;

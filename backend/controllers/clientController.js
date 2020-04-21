@@ -1,7 +1,8 @@
 //https://codeforgeek.com/manage-session-using-node-js-express-4/
 //req.params.id
 let Client = require('../models/client.model');
-let Case = require('../models/case.model')
+let Case = require('../models/case.model');
+let Lawyer = require('../models/lawyer.model');
 
 let user="000000000000";
 
@@ -61,6 +62,7 @@ exports.client_register = function(req, res) {
     let client = new Client(req.body);
 	if(req.body.pass==req.body.repass){
         client.logged=1;
+        client.Usertype=1;
 		client.save()
         .then(resp=> {
             user=client._id
@@ -123,19 +125,28 @@ exports.add_case= function(req, res) {
  
  //Adding a lawyer
 exports.add_lawyer = function(req, res) {
-    Case.updateOne({client_id:req.body.client_id,},
+    Case.updateOne({client_id:req.body.client_id,_id:req.body.caseid},
         { $push: {lawyer_id:req.body.lawyer_id}},function(err, resp) {
             if (err) {
                 res.json(err);
             } else {
-                    res.json("updated!");
+                Lawyer.updateOne({_id:req.body.lawyer_id},
+                    { $push: {requests:req.body.caseid}},function(err, resp) {
+                        if (err) {
+                            res.json(err);
+                        } else {
+                                res.json("updated!");
+                        }
+                    });
+            
             }
         });
+   
      };
 
 exports.get_case = function(req, res) {
 	
-    Case.find(function(err, response) {
+    Case.find({client_id:req.params.id},function(err, response) {
         if (err) {
             console.log(err);
         } else {
@@ -143,4 +154,3 @@ exports.get_case = function(req, res) {
         }
     });
 };
-

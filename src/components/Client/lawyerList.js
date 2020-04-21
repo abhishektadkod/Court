@@ -37,10 +37,13 @@ export class LawyerList extends Component {
    handleSubmit(event) {
     let url = 'http://127.0.0.1:4000/client/advocate';
     const client= this.props.clients._id;
+    const cases=this.props.caseid;
+    //alert(cases);
      axios.post(url,
          {
              "client_id": client,
              "lawyer_id": this.state.v._id,
+             "caseid":cases,
 
          },
          {withCredentials: true})
@@ -63,7 +66,6 @@ export class LawyerList extends Component {
          console.log(this.state.users);
          
         })
-    this.props.changeview();
      }
  
 
@@ -84,7 +86,8 @@ export class LawyerList extends Component {
        return (
  
            <div className="container p-3 my-3 ">
-               
+               {this.props.caseid}
+              
            <div className="display-4"><b>Select a Lawyer for your case</b></div><br/><br/>
             <div className="row">
            <div className="col-md-6">

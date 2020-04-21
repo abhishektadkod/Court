@@ -42,7 +42,7 @@ export default class Registration extends Component {
       )
       .then(response => {
         if (response.status === 200) {
-            this.props.handleLogin();
+            this.props.handleLogin(response.data);
             this.props.animation();
             this.props.history.push("/dash");
             

@@ -12,7 +12,7 @@ export class Notify extends Component {
 
         view_all(){
             axios
-            .get("http://localhost:4000/client/case", { withCredentials: true })
+            .get("http://localhost:4000/client/case/"+this.props.User._id, { withCredentials: true })
             .then(response => {  
                
                 this.setState({

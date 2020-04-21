@@ -15,8 +15,10 @@ let Client = new Schema({
         unique:true
     },
     logged: {
-        type: Number
-		
+        type: Number	
+    },
+    Usertype:{
+        type:Number
     },
     updated: { type: Date, default: Date.now }
 });

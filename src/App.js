@@ -2,7 +2,6 @@ import './App.css';
 import React, { Component } from "react";
 import axios from 'axios';
 import { BrowserRouter, Switch, Route ,Link} from "react-router-dom";
-import { Provider } from 'react-redux'
 import Confetti from 'react-confetti'
 
 import store from './redux/store'
@@ -18,6 +17,7 @@ import Notify from './components/Client/notify';
 import Viewcase from './components/Client/ViewCase';
 
 import SelectClient from './components/Lawyer/SelectClient';
+import { SERVER_URL } from './config';
 
 // Files which are not required anymore:
 // ./Client/time.js,
@@ -53,7 +53,7 @@ class App extends Component {
       loggedInStatus: "LOGGED_IN",
       user:data,
     });
-    store.dispatch( setType({ payload:data.Usertype }) );
+    store.dispatch( setType({ payload:data.Usertype ,userid:data._id}) );
     console.log(store.getState().typeOfUser);
   }
 
@@ -62,15 +62,15 @@ class App extends Component {
       loggedInStatus: "NOT_LOGGED_IN",
       user:{}
     });
-    store.dispatch( setType({ payload:"none"}) );
+    store.dispatch( setType({ payload:"none",userid:""}) );
     console.log(store.getState().typeOfUser);
   }
 
   handleLogoutClick() {
     const a=store.getState().typeOfUser.payload;
-    const b=a==1?"client":"lawyer"
+    const b=a===1?"/client":"/lawyer"
     axios
-      .get("http://localhost:4000/"+b+"/logout", { withCredentials: true })
+      .get(SERVER_URL+b+"/logout/"+this.state.user._id, { withCredentials: true })
       .then(response => {
         this.handleLogout();
         window.location.href="/";
@@ -79,17 +79,22 @@ class App extends Component {
       .catch(error => {
         console.log("logout error", error);
       });
-    if(b==="client"){
+    if(b==="/client"){
       localStorage.removeItem("clientdash");
     }
   }
 
   checkLoginStatus() {
     console.log(store.getState().typeOfUser);
+    //alert(store.getState().typeOfUser.userid);
     const a=store.getState().typeOfUser.payload;
-    const b=a==1?"client":"lawyer"
+    //const b=a==1?"client":"lawyer"
+    let b;
+    if(a===1){b="/client";}
+    else if(a===0){b="/lawyer";}
+    else {b="";}
     axios
-      .get("http://localhost:4000/"+b+"/logged", { withCredentials: true })
+      .get(SERVER_URL+b+"/logged/"+store.getState().typeOfUser.userid, { withCredentials: true })
       .then(response => {
 
         if (
@@ -112,6 +117,9 @@ class App extends Component {
             loggedInStatus: "NOT_LOGGED_IN",
             user: {}
           });
+        }
+        else{
+          console.log(response.data);
         }
       })
       .catch(error => {
@@ -174,8 +182,8 @@ class App extends Component {
                   <div className="navbar-brand" ><div className="display-4">COURT CASE MANAGEMENT</div></div>
                   <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
 
-                  {navlist.map((item) =>   
-                    <li className="nav-item active">
+                  {navlist.map((item,index) =>   
+                    <li className="nav-item active" key={index}>
                     <div className="nav-link"><Link to={item.path}>{item.name}</Link></div>
                     </li>  
                     )}
@@ -187,9 +195,10 @@ class App extends Component {
 
               <Switch>
 
-              {routecomponents.map(({Component:C,path}) =>   
+              {routecomponents.map(({Component:C,path},index) =>   
                    <Route
                    exact
+                   key={index}
                    path={path}
                    render={props => (
                      <C

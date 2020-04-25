@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import {Fade} from 'react-reveal';
 import {Zoom} from 'react-reveal';
+import { SERVER_URL } from "../config";
 
 export default class Login extends Component {
   constructor(props) {
@@ -28,7 +29,7 @@ export default class Login extends Component {
     const { user, password } = this.state;
 
     axios
-        .post('http://127.0.0.1:4000/client/login', 
+        .post(SERVER_URL+'/client/login', 
             {
                 "username":user,
                 "pass":password

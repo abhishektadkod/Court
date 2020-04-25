@@ -13,10 +13,10 @@ var client_controller = require('../controllers/clientController');
 router.get('/', client_controller.client_list);  
 
 // GET request for logged in information
-router.get('/logged', client_controller.client_logged);  
+router.get('/logged/:id', client_controller.client_logged);  
 
 // GET request for logout
-router.get('/logout', client_controller.client_logout);  
+router.get('/logout/:id', client_controller.client_logout);  
 
 // POST to add client
 router.post('/add', client_controller.client_register);  

@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import Fade from 'react-reveal/Fade';
 import socketIOClient from "socket.io-client";
+import { SERVER_URL, SOCKETIO_SERVER } from '../../config';
 
  
 export class SelectClient extends Component {
@@ -12,7 +13,7 @@ export class SelectClient extends Component {
            cases:'',
            loading:true,
            caseid:'',
-           endpoint:'http://localhost:4001',
+           endpoint:SOCKETIO_SERVER+'/lawyer',
        }; 
        this.acceptRequest=this.acceptRequest.bind(this);
    }
@@ -21,7 +22,7 @@ export class SelectClient extends Component {
    {
     //post api updating lawyers ka cases(cid in lawyers)
       
-        axios.post("http://localhost:4000/lawyer/select/"+this.props.User._id,
+        axios.post(SERVER_URL+"/lawyer/select/"+this.props.User._id,
             {
                 "caseid": this.state.caseid._id
             },
@@ -39,9 +40,17 @@ export class SelectClient extends Component {
 
    componentDidMount() {
         const { endpoint } = this.state;
-        const socket = socketIOClient(endpoint);
+        const socket = socketIOClient(endpoint+'/'+this.props.User._id);
         socket.emit("lawyerid",this.props.User._id);
-        socket.on("F", data => {console.log(data[0].selected);this.setState({ cases: data,loading:false});});
+        socket.on("F", data => {
+            if(data.length===0){
+                
+            }
+            else{
+            console.log(data[0].selected);
+            this.setState({ cases: data,loading:false});
+            }
+        });
         socket.on("disconnect", data => this.setState({ response: "server disconnected!"}));
     }
      

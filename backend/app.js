@@ -14,7 +14,7 @@ const PORT = 4000;
 const court="Court"
 
 
-app.use(cors({origin:'http://localhost:3000',credentials: true,}))
+app.use(cors({origin:['http://localhost:3000','http://192.168.1.8:3000'],credentials: true,}))
 
 
 app.use(bodyParser.json());
@@ -31,29 +31,32 @@ connection.once('open', function() {
 
 app.use('/client', clientRouter);
 app.use('/lawyer', lawyerRouter);
+app.use('/logged/:id', function(req,res){res.json("SIGN UP!"+req.params.id)})
 
 const server = http.createServer(app);
 
 const io = socketIo(server); // < Interesting!
 
 let interval;
-let lawyer;
 
-io.on("connection", socket => {
-  console.log("New client connected");
+const lawyersoc=(id)=>{
+  io.of("/lawyer/"+id).on("connection", socket => {
+  console.log("New client connected-"+socket.id);
   if (interval) {
     clearInterval(interval);
   }
-  interval = setInterval(() => getApiAndEmit(socket), 1000);
+  interval = setInterval(() => getApiAndEmit(socket,socket["lawyer"]), 1000);
+
   socket.on("disconnect", () => {
-    console.log("Client disconnected");
+    console.log("Client disconnected-"+socket.id);
   });
-  socket.on("lawyerid", data => {lawyer=data});
+  socket.on("lawyerid", data => {socket["lawyer"]=data});
 });
+}
 
+//lawyersoc("5ea31d7f8c8be91da61fc148");
 
-
-const getApiAndEmit = async socket => {
+const getApiAndEmit = async (socket,lawyer) => {
     try {
       const cases = await axios.get(
         "http://localhost:4000/lawyer/select/"+lawyer
@@ -70,3 +73,5 @@ app.listen(PORT, function() {
 });
 
 server.listen(4001, () => console.log(`Listening on port ${4001}`));
+
+exports.lawyersoc = lawyersoc;

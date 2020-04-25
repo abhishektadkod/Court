@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { SERVER_URL } from '../../config';
  
 export class Register extends Component {
    constructor(props){
@@ -34,7 +35,7 @@ export class Register extends Component {
    }
  
    handleSubmit(event) {
-       let url = 'http://127.0.0.1:4000/client/case';
+       let url = SERVER_URL+'/client/case';
        const client= this.props.clients._id;
         let case_type = this.state.c;
         let case_description= this.state.description;
@@ -57,7 +58,7 @@ export class Register extends Component {
    }
  
    componentDidMount() {
-       let url = `http://localhost:4000/lawyer`;
+       let url = SERVER_URL+'/lawyer';
        axios.get(url).then(response => response.data)
        .then((data) => {
          this.setState({ users: data })

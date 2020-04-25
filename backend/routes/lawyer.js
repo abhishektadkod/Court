@@ -18,10 +18,10 @@ router.get('/', lawyer_controller.lawyer_list);
 router.get('/type/:id',lawyer_controller.lawyer_type);
  
 // GET request for logged in information
-router.get('/logged', lawyer_controller.lawyer_logged); 
+router.get('/logged/:id', lawyer_controller.lawyer_logged); 
  
 // GET request for logout
-router.get('/logout', lawyer_controller.lawyer_logout); 
+router.get('/logout/:id', lawyer_controller.lawyer_logout); 
 
 // GET lawyer listing
 router.get("/select/:id",lawyer_controller.lawyer_case_list );

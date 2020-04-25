@@ -1,6 +1,8 @@
 let Client = require('../models/client.model');
 let Case = require('../models/case.model');
 let Lawyer = require('../models/lawyer.model');
+
+let soc = require('../app');
  
 let user="000000000000";
  
@@ -19,18 +21,20 @@ exports.lawyer_list = function(req, res) {
 //logged
 exports.lawyer_logged = function(req, res) {
   
-   Lawyer.findById({"_id" : user},function(err, lawyer) {
+   Lawyer.findById({_id : req.params.id},function(err, lawyer) {
        if (err) {
            console.log(err);
        } else {
            if(!lawyer){
                res.status(420).json("User doesn't exist")
                console.log(lawyer);
+               
            }
            else
            {
            res.json({"logged_in":lawyer.logged,"user":lawyer});
            console.log(user);
+           soc.lawyersoc(req.params.id)
            }
        }
    });
@@ -40,7 +44,7 @@ exports.lawyer_logged = function(req, res) {
  
 //logout
 exports.lawyer_logout = function(req, res) {
-   Lawyer.updateOne({_id:user},{logged:0},
+   Lawyer.updateOne({_id:req.params.id},{logged:0},
        function(err, resp) {
                if (err) {
                    res.json(err);
@@ -134,7 +138,7 @@ exports.lawyer_add=function(req, res) {
             console.log(resp);
         })
         .catch(err => {
-            res.status(400).send('adding new client failed');
+            res.status(400).send(err);
         });
 };
 

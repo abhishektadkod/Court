@@ -1,8 +1,9 @@
 import { SET_TYPE } from './userTypes'
 
-export const setType = (number ) => {
+export const setType = (number,id ) => {
   return {
     type: SET_TYPE,
-    payload: number
+    payload: number,
+    userid:id
   }
 }

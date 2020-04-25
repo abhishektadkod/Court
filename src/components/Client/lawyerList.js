@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import { SERVER_URL } from '../../config';
 
  
 export class LawyerList extends Component {
@@ -35,7 +36,7 @@ export class LawyerList extends Component {
    }
  
    handleSubmit(event) {
-    let url = 'http://127.0.0.1:4000/client/advocate';
+    let url = SERVER_URL+ '/client/advocate';
     const client= this.props.clients._id;
     const cases=this.props.caseid;
     //alert(cases);
@@ -59,7 +60,7 @@ export class LawyerList extends Component {
 }
  
    componentDidMount() {
-       let url = `http://localhost:4000/lawyer`;
+       let url = SERVER_URL+'/lawyer';
        axios.get(url).then(response => response.data)
        .then((data) => {
          this.setState({ users: data })
@@ -74,10 +75,11 @@ export class LawyerList extends Component {
        
     let filteredUsers= this.state.users.filter(
         (user) =>{
-            if(this.state.select== "Civil Case" || this.state.select=="Criminal Case" || this.state.select=="Enforcement Case" || this.state.select=="Estate administration case")
+            if(this.state.select=== "Civil Case" || this.state.select==="Criminal Case" || this.state.select==="Enforcement Case" || this.state.select==="Estate administration case")
                 return(user.type.toLowerCase().indexOf(this.state.select.toLowerCase())!== -1);
             if(user.username.toLowerCase().indexOf(this.state.search.toLowerCase())!==-1)
                 return(user.username.toLowerCase().indexOf(this.state.search.toLowerCase())!==-1)
+            //return -1
         }
     );
 

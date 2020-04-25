@@ -21,7 +21,7 @@ exports.client_list = function(req, res) {
 //logged
 exports.client_logged = function(req, res) {
     
-    Client.findById({"_id" : user},function(err, client) {
+    Client.findById({_id : req.params.id},function(err, client) {
         if (err) {
             console.log(err);
         } else {
@@ -32,7 +32,7 @@ exports.client_logged = function(req, res) {
             else
             {
             res.json({"logged_in":client.logged,"user":client});
-            console.log(user);
+           
             }
         }
     });
@@ -42,7 +42,7 @@ exports.client_logged = function(req, res) {
 
 //logout
 exports.client_logout = function(req, res) {
-    Client.updateOne({_id:user},{logged:0},
+    Client.updateOne({_id:req.params.id},{logged:0},
         function(err, resp) {
                 if (err) {
                     res.json(err);

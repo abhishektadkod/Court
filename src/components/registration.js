@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import axios from "axios";
 import Zoom from 'react-reveal/Zoom';
 import {Fade} from 'react-reveal';
+import { SERVER_URL } from "../config";
 
 export default class Registration extends Component {
   constructor(props) {
@@ -30,7 +31,7 @@ export default class Registration extends Component {
     const { user, password, email ,password_confirmation} = this.state;
 
     axios
-        .post('http://127.0.0.1:4000/client/add', 
+        .post(SERVER_URL+'/client/add', 
             {
                 "username":user,
                 "pass":password,

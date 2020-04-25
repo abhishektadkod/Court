@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios';
+import { SERVER_URL } from '../../config';
 
 export class Notify extends Component {
     constructor(props){
@@ -12,7 +13,7 @@ export class Notify extends Component {
 
         view_all(){
             axios
-            .get("http://localhost:4000/client/case/"+this.props.User._id, { withCredentials: true })
+            .get(SERVER_URL+"/client/case/"+this.props.User._id, { withCredentials: true })
             .then(response => {  
                
                 this.setState({

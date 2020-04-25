@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import axios from 'axios';
 import Register from './register';
 import LawyerList from './lawyerList';
+import { SERVER_URL } from '../../config';
 
 class Dashboard extends Component {
     constructor(props) {
@@ -28,7 +29,7 @@ class Dashboard extends Component {
     handleLogoutClick() {
         
         axios
-          .get("http://localhost:4000/client/logout", { withCredentials: true })
+          .get(SERVER_URL + "/client/logout", { withCredentials: true })
           .then(response => {
             this.props.loggedOut();
             this.props.history.push("/");

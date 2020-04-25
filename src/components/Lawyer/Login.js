@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import {Fade} from 'react-reveal';
 import {Zoom} from 'react-reveal';
-import OtpInput from 'react-otp-input';
-import Confetti from 'react-confetti'
+import { SERVER_URL } from "../../config";
+
  
 export default class Login extends Component {
  constructor(props) {
@@ -37,7 +37,7 @@ export default class Login extends Component {
    if(this.state.val===otp){
  
    axios
-       .post('http://127.0.0.1:4000/lawyer/login',
+       .post(SERVER_URL+'/lawyer/login',
            {
                "phone":mobile,
            }
@@ -69,7 +69,7 @@ export default class Login extends Component {
  handleVerification(event){
    const { mobile } = this.state;
    axios
-       .put('http://127.0.0.1:4000/lawyer/login',
+       .put(SERVER_URL+'/lawyer/login',
        {
          "phone":mobile
        }

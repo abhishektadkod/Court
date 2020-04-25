@@ -29,13 +29,11 @@ let Lawyer = new Schema({
     },
     requests:{
         type: [Schema.ObjectId],
-        ref:'Case',
-        unique: true
+        ref:'Case'
     },
     accepted:{
         type: [Schema.ObjectId],
-        ref:'Case',
-        unique: true
+        ref:'Case'
     },
     updated: { type: Date, default: Date.now }
 

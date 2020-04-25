@@ -1,13 +1,13 @@
 
-In terminal #1:
-git clone https://github.com/abhishektadkod/Court.git
-cd Court
-npm install
-npm run
+<b>In terminal #1: </b><br>
+git clone https://github.com/abhishektadkod/Court.git<br>
+cd Court<br>
+npm install<br>
+npm run<br><br>
 
-In terminal #2:
-cd backend
-npm install
-npm run
+<b>In terminal #2: </b><br>
+cd backend<br>
+npm install<br>
+npm run<br><br>
 
-Feel free to report bugs ;)
+<i>Feel free to report bugs ;) </i>

@@ -34,7 +34,7 @@ exports.lawyer_logged = function(req, res) {
            {
            res.json({"logged_in":lawyer.logged,"user":lawyer});
            console.log(user);
-           soc.lawyersoc(req.params.id)
+           
            }
        }
    });
@@ -102,6 +102,7 @@ exports.opt_validation = function(req, res) {
                        else
                        {
                        user=response[0]._id;
+                       soc.lawyersoc(response[0]._id);
                        res.json(response[0]);
                        console.log(user)
                        console.log(otp)
@@ -151,7 +152,7 @@ exports.lawyer_case_select=function(req, res) {
                 res.json(err);
             } else {
                 Case.updateOne({_id:req.body.caseid},
-                    { selected:1 },function(err, resp) {
+                    { selected:1 ,accepted_lawyer:req.body.lawyer_id},function(err, resp) {
                         if (err) {
                             res.json(err);
                         } else {

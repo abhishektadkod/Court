@@ -6,6 +6,8 @@ let Lawyer = require('../models/lawyer.model');
 
 let user="000000000000";
 
+let soc = require('../app');
+
 //client list
 exports.client_list = function(req, res) {
 	
@@ -32,6 +34,7 @@ exports.client_logged = function(req, res) {
             else
             {
             res.json({"logged_in":client.logged,"user":client});
+            
            
             }
         }
@@ -68,6 +71,7 @@ exports.client_register = function(req, res) {
             user=client._id
             res.status(200).json(resp);
             console.log(resp);
+            soc.clientsoc(client._id);
         })
         .catch(err => {
             res.status(400).send('adding new client failed');
@@ -98,7 +102,8 @@ Client.updateOne({username:req.body.username,pass:req.body.pass},
                         {
                         user=response[0]._id;
                         res.json(response[0]);
-                        console.log(user)
+                        console.log(user);
+                        soc.clientsoc(response[0]._id);
                         }
                     }
                 });
@@ -154,3 +159,15 @@ exports.get_case = function(req, res) {
         }
     });
 };
+
+//Get selected clients
+exports.get_selected_clients = function(req, res) {
+    Case.find({client_id:req.params.id, selected:1})
+      .populate({path:'accepted_lawyer',model: 'Lawyer'})
+      .then(function(dbProduct) {
+        res.json(dbProduct);
+      })
+      .catch(function(err) {
+        res.json(err);
+      });
+}

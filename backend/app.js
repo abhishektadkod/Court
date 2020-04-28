@@ -19,7 +19,7 @@ app.use(cors({origin:['http://localhost:3000','http://192.168.1.8:3000'],credent
 
 app.use(bodyParser.json());
 
-mongoose.connect('mongodb://127.0.0.1:27017/'+court,  {
+mongoose.connect('mongodb+srv://abhishek:abhishek_1@cluster0-h2txx.mongodb.net/test?retryWrites=true&w=majority',  {
     useCreateIndex: true,
     useNewUrlParser: true
   });
@@ -37,15 +37,16 @@ const server = http.createServer(app);
 
 const io = socketIo(server); // < Interesting!
 
-let interval;
+let interval1;
+let interval2;
 
 const lawyersoc=(id)=>{
   io.of("/lawyer/"+id).on("connection", socket => {
   console.log("New client connected-"+socket.id);
-  if (interval) {
-    clearInterval(interval);
+  if (interval1) {
+    clearInterval(interval1);
   }
-  interval = setInterval(() => getApiAndEmit(socket,socket["lawyer"]), 1000);
+  interval1 = setInterval(() => getApiAndEmit(socket,socket["lawyer"]), 1000);
 
   socket.on("disconnect", () => {
     console.log("Client disconnected-"+socket.id);
@@ -55,6 +56,26 @@ const lawyersoc=(id)=>{
 }
 
 //lawyersoc("5ea31d7f8c8be91da61fc148");
+
+//clientsoc("5e773f13739d78e824120b1e")
+
+const clientsoc=(id)=>{
+
+  io.of("/client/"+id).on("connection", socket => {
+  console.log("New client connected-"+socket.id);
+  
+  if (interval2) {
+    clearInterval(interval2);
+  }
+
+  interval2 = setInterval(() => getClientApiAndEmit(socket,socket["clients"]), 1000);
+
+  socket.on("disconnect", () => {
+    console.log("Client disconnected-"+socket.id);
+  });
+  socket.on("clientid", data => {socket["clients"]=data});
+});
+}
 
 const getApiAndEmit = async (socket,lawyer) => {
     try {
@@ -68,10 +89,26 @@ const getApiAndEmit = async (socket,lawyer) => {
   };
 
 
+  const getClientApiAndEmit = async (socket,client) => {
+
+    try {
+      const cases = await axios.get(
+        "http://localhost:4000/client/select/"+client
+      ); 
+      socket.emit("F",cases.data); // Emitting a new message. It will be consumed by the client
+    } catch (error) {
+      console.error(`Error: ${error.code}`);
+    }  
+  };
+
+
+
 app.listen(PORT, function() {
     console.log("Server is running on Port: " + PORT);
 });
 
 server.listen(4001, () => console.log(`Listening on port ${4001}`));
 
+
+exports.clientsoc = clientsoc;
 exports.lawyersoc = lawyersoc;

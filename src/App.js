@@ -174,17 +174,20 @@ class App extends Component {
       
             <BrowserRouter>
             
-              <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
+              <nav className="navbar navbar-expand-lg navbar-light bg-dark">
+                <button className="navbar-toggler" style={{backgroundColor:"white"}} type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                  <span className="navbar-toggler-icon" ></span>
                 </button>
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                  <div className="navbar-brand" ><div className="display-4">COURT CASE MANAGEMENT</div></div>
-                  <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
+                  <div className="navbar-brand" ><div className="display-4 text-light">COURT CASE MANAGEMENT</div></div>
+                  <ul className="navbar-nav  ml-auto">
 
                   {navlist.map((item,index) =>   
                     <li className="nav-item active" key={index}>
-                    <div className="nav-link"><Link to={item.path}>{item.name}</Link></div>
+                      <div className="nav-link">
+                        <Link className="links h4" style={{ textDecoration: 'none'}} to={item.path}>{item.name}</Link>
+                      &nbsp;&nbsp;
+                      </div>
                     </li>  
                     )}
 

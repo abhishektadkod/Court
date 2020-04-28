@@ -1,6 +1,12 @@
-.App {
-  text-align: center;
+.links{
+  color:white;
+  text-decoration: none;
 }
+
+.links:hover {
+  color:peachpuff;
+}
+
 
 .App-logo {
   height: 40vmin;

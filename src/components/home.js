@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { MdAccountBalance } from "react-icons/md";
+import '../App.css';
 
 class Home extends Component {
 
@@ -11,22 +12,14 @@ class Home extends Component {
 
         
         return (
-            <div>
+            <div className="Home">
                 <div style={{textAlign:'center'}}>
-                <MdAccountBalance color='purple' size='520px'/>
-        
+                <MdAccountBalance color='purple' size='520px'/>   
               
                 <br/><br/>
                 <button className="btn btn-outline-primary btn-lg" onClick={this.fun}>GET STARTED!</button>
                 </div>
 
-                
-                
-                   
-                 &nbsp;
-                {/* <div className="btn btn-primary" onClick={()=>this.props.history.push("/register")}>REGISTER</div>
-                &nbsp;
-                <div className="btn btn-primary" onClick={()=>this.props.history.push("/login")}>LOGIN</div> */}
             </div>
         )
     }

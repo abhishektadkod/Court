@@ -30,6 +30,9 @@ router.post('/case', client_controller.add_case);
 //POST to add a case
 router.get('/case/:id', client_controller.get_case);
 
+//GET selected clients
+router.get('/select/:id', client_controller.get_selected_clients);
+
 //POST to add a lawyer to a case
 router.post('/advocate', client_controller.add_lawyer);
 

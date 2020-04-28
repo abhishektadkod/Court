@@ -24,7 +24,8 @@ export class SelectClient extends Component {
       
         axios.post(SERVER_URL+"/lawyer/select/"+this.props.User._id,
             {
-                "caseid": this.state.caseid._id
+                "caseid": this.state.caseid._id,
+                "lawyer_id":this.props.User._id
             },
             {withCredentials: true})
             .then(response=> {
@@ -43,12 +44,12 @@ export class SelectClient extends Component {
         const socket = socketIOClient(endpoint+'/'+this.props.User._id);
         socket.emit("lawyerid",this.props.User._id);
         socket.on("F", data => {
-            if(data.length===0){
-                
+            if(data.length){
+                console.log(data);
+                this.setState({ cases: data,loading:false});
             }
             else{
-            console.log(data[0].selected);
-            this.setState({ cases: data,loading:false});
+            
             }
         });
         socket.on("disconnect", data => this.setState({ response: "server disconnected!"}));

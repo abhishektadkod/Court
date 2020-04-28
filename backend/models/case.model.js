@@ -20,6 +20,10 @@ let Case = new Schema({
    selected:{
         type:Number
    },
+   accepted_lawyer:{
+    type:Schema.ObjectId,
+    ref:'Lawyer'
+   },
    updated:{type: Date, default: Date.now}
 });
  

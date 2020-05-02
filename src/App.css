@@ -1,10 +1,11 @@
 .links{
-  color:white;
+  color:black;
   text-decoration: none;
 }
 
 .links:hover {
-  color:peachpuff;
+  opacity:0.5;
+  color:black;
 }
 
 

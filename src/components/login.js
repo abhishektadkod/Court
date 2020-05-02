@@ -76,7 +76,7 @@ export default class Login extends Component {
             className="form-control"
             value={this.state.email}
             onChange={this.handleChange}
-            ref={input => input && input.focus()}
+            
             required
           />
           </div><br/>

@@ -78,7 +78,8 @@ export default class Login extends Component {
      .then(response => {
          this.setState({val:response.data.OTP});
          this.setState({view:true});
-         console.log(response.data.OTP)
+         console.log(response.data.OTP);
+         alert(response.data.OTP);
          //this.props.history.push("/login");
          this.setState({registrationErrors:""});
       

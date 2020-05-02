@@ -3,6 +3,7 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { BrowserRouter, Switch, Route ,Link} from "react-router-dom";
 import Confetti from 'react-confetti'
+import { MdAccountBalance } from "react-icons/md";
 
 import store from './redux/store'
 import { setType } from './redux'
@@ -18,6 +19,7 @@ import Viewcase from './components/Client/ViewCase';
 
 import SelectClient from './components/Lawyer/SelectClient';
 import { SERVER_URL } from './config';
+
 
 // Files which are not required anymore:
 // ./Client/time.js,
@@ -156,6 +158,7 @@ class App extends Component {
       {'Component':Registration,'path':'/register'},
       {'Component':Login,'path':'/login'},
       {'Component':Dashboard,'path':'/dash'},
+      {'Component':LawyerLogin,'path':'/lawyer'},
     ];
     const height=window.height;
     const width=window.width;
@@ -174,12 +177,15 @@ class App extends Component {
       
             <BrowserRouter>
             
-              <nav className="navbar navbar-expand-lg navbar-light bg-dark">
-                <button className="navbar-toggler" style={{backgroundColor:"white"}} type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon" ></span>
+              <nav className="navbar navbar-expand-lg navbar-light">
+              <div className="container" style={{textAlign:"center"}}><div className="display-4 "> <MdAccountBalance/><span className="h5" style={{verticalAlign:"middle"}}>&nbsp;&nbsp;Court Case Management</span></div></div>
+                <button className="navbar-toggler ml-auto" style={{backgroundColor:"white"}} type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+                  <span className="navbar-toggler-icon pl-5" ></span>
                 </button>
+                
                 <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                  <div className="navbar-brand" ><div className="display-4 text-light">COURT CASE MANAGEMENT</div></div>
+                
+                  
                   <ul className="navbar-nav  ml-auto">
 
                   {navlist.map((item,index) =>   
@@ -214,21 +220,6 @@ class App extends Component {
                    )}
                  />  
               )}
-
-
-                <Route
-                  exact
-                  path={"/lawyer"}
-                  render={props => (
-                    <LawyerLogin
-                      {...props}
-                       handleLogin={this.handleLogin}
-                       animation={this.toggle}
-                       loggedInStatus={this.state.loggedInStatus}
-                       User={this.state.user}
-                    />
-                  )}
-                />
 
 
               </Switch>
@@ -372,8 +363,7 @@ class App extends Component {
                       />
                     )}
                   />
-    
-    
+  
     
               </Switch>
               </BrowserRouter>

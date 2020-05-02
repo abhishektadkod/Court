@@ -29,6 +29,7 @@
     "react-shopping-cart": "^1.8.32",
     "react-timeout": "^1.2.0",
     "react-transition-group": "^4.3.0",
+    "react-typing-effect": "^2.0.3",
     "redux": "^4.0.5",
     "socket.io-client": "^2.3.0"
   },

@@ -86,7 +86,7 @@ export default class Registration extends Component {
             placeholder="Enter username"
             value={this.state.user}
             onChange={this.handleChange}
-            ref={input => input && input.focus()}
+           
             required
           />
           </div>

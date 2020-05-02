@@ -7,7 +7,7 @@ npm run<br><br>
 
 
 <b>In terminal #2: </b><br>
-In the project directory, you can run:
+In the same project directory:
 (Navigate to /Court)<br>
 cd backend<br>
 npm install<br>

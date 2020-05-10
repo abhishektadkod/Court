@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import axios from 'axios';
 import { BrowserRouter, Switch, Route ,Link} from "react-router-dom";
 import Confetti from 'react-confetti'
-import { MdAccountBalance } from "react-icons/md";
 
 import store from './redux/store'
 import { setType } from './redux'
@@ -18,14 +17,18 @@ import Notify from './components/Client/notify';
 import Viewcase from './components/Client/ViewCase';
 
 import SelectClient from './components/Lawyer/SelectClient';
+
 import { SERVER_URL } from './config';
+import Navigation from './Navigation';
 
 
-// Files which are not required anymore:
-// ./Client/time.js,
-// ./Lawyer/App.js,
-// ./Lawyer/Dashboard.js
-// ./Lawyer/Home.js
+const height=window.height;
+const width=window.width;
+const a=(
+    <Confetti
+        width={width}
+        height={height}
+     />);
 
 class App extends Component {
 
@@ -88,9 +91,9 @@ class App extends Component {
 
   checkLoginStatus() {
     console.log(store.getState().typeOfUser);
-    //alert(store.getState().typeOfUser.userid);
+    
     const a=store.getState().typeOfUser.payload;
-    //const b=a==1?"client":"lawyer"
+    //const b=a==1?"client":"lawyer
     let b;
     if(a===1){b="/client";}
     else if(a===0){b="/lawyer";}
@@ -132,7 +135,6 @@ class App extends Component {
 
   componentDidMount() {
      this.checkLoginStatus();
-     store.subscribe(() => console.log('Look ma, Redux!!'));   
   }
 
 
@@ -145,12 +147,20 @@ class App extends Component {
       {'name':'Lawyer','path':'/lawyer'},
     ];
 
-    const navlistafter=[
+    const navlistforclient=[
       {'name':'Home','path':'/dash'},
       {'name':'My Profile','path':'/dash'},
       {'name':'Register a case','path':'/case'},
-      {'name':'Registered Cases','path':'/viewcases'},
+      {'name':'Registered Cases','path':'/viewcases/0'},
       {'name':'History of hearings','path':'/dash'},
+      {'name':'Logout','path':'/logout','click':this.handleLogoutClick},
+    ];
+
+    const navlistforlawyer=[
+      {'name':'Home','path':'/dash'},
+      {'name':'My Profile','path':'/dash'},
+      {'name':'History of hearings','path':'/dash'},
+      {'name':'Logout','path':'/logout','click':this.handleLogoutClick},
     ];
 
     const routecomponents=[
@@ -160,221 +170,83 @@ class App extends Component {
       {'Component':Dashboard,'path':'/dash'},
       {'Component':LawyerLogin,'path':'/lawyer'},
     ];
-    const height=window.height;
-    const width=window.width;
-    const a=(
-    <Confetti
-        width={width}
-        height={height}
-     />);
 
-    if( this.state.loggedInStatus==="NOT_LOGGED_IN")
-    {
-      return (
+    const routecomponentsclient=[
+      {'Component':Home,'path':'/'},
+      {'Component':Notify,'path':'/dash'},
+      {'Component':Dashboard,'path':'/case'},
+      {'Component':Viewcase,'path':'/viewcases/:id'},
+    ];
+
+    const routecomponentslawyer=[
+      {'Component':SelectClient,'path':'/dash'},
+    ];
+
+    
+     let navigation;
+     let routing;
+
+     if( this.state.loggedInStatus==="NOT_LOGGED_IN"){
+       navigation=navlist;
+       routing=routecomponents;
+      }
+
+     else{
+        if(this.state.user.Usertype===1){
+          navigation=navlistforclient;
+          routing=routecomponentsclient;
+        }
+
+        else{
+          navigation=navlistforlawyer;
+          routing=routecomponentslawyer;
+        }
+      }
+
+      return(
           <div className="app" >
 
-          {this.state.on?a:null}
-      
-            <BrowserRouter>
-            
-              <nav className="navbar navbar-expand-lg navbar-light">
-              <div className="container" style={{textAlign:"center"}}><div className="display-4 "> <MdAccountBalance/><span className="h5" style={{verticalAlign:"middle"}}>&nbsp;&nbsp;Court Case Management</span></div></div>
-                <button className="navbar-toggler ml-auto" style={{backgroundColor:"white"}} type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon pl-5" ></span>
-                </button>
-                
-                <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                
-                  
-                  <ul className="navbar-nav  ml-auto">
-
-                  {navlist.map((item,index) =>   
-                    <li className="nav-item active" key={index}>
-                      <div className="nav-link">
-                        <Link className="links h4" style={{ textDecoration: 'none'}} to={item.path}>{item.name}</Link>
-                      &nbsp;&nbsp;
-                      </div>
-                    </li>  
-                    )}
-
-                  </ul>
-
-                </div>
-            </nav>
-
-              <Switch>
-
-              {routecomponents.map(({Component:C,path},index) =>   
-                   <Route
-                   exact
-                   key={index}
-                   path={path}
-                   render={props => (
-                     <C
-                       {...props}
-                       handleLogin={this.handleLogin}
-                       animation={this.toggle}
-                       loggedInStatus={this.state.loggedInStatus}
-                       User={this.state.user}
-                     />
-                   )}
-                 />  
-              )}
-
-
-              </Switch>
-
-            </BrowserRouter>
-
-          </div>
-      );
-    }
-    else
-    {
-      
-      if(this.state.user.Usertype===1)
-      {
-        return (
-            <div className="app" >
             {this.state.on?a:null}
-
+        
               <BrowserRouter>
 
-              <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                  <div className="navbar-brand"><div className="display-4">COURT CASE MANAGEMENT</div></div>
-                  <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-
-
-                  {navlistafter.map((item) =>   
-                      <li className="nav-item active">
-                      <div className="nav-link"><Link to={item.path}>{item.name}</Link></div>
+                <Navigation 
+                    content={navigation.map((item,index) =>   
+                      <li className="nav-item active" key={index}>
+                        <div className="nav-link" onClick={item.click}>
+                          <Link className="links" style={{ textDecoration: 'none'}} to={item.path}>{item.name}</Link>
+                          
+                        </div>
                       </li>  
-                      )}
-
-                    <li className="nav-item">
-                    <div className="nav-link" onClick={this.handleLogoutClick}>Logout</div>
-                    </li>
-                  </ul>
-
-                </div>
-              </nav>
+                  )}/>
 
                 <Switch>
 
-                <Route
-                    exact
-                    path={"/dash"}
-                    render={props => (
-                      <Notify
-                        {...props}
-                        loggedInStatus={this.state.loggedInStatus}
-                        User={this.state.user}
-                        loggedOut={this.handleLogout}
-                        animation={this.toggle}
-                      />
-                    )}
-                  />
-
-                  <Route
-                    exact
-                    path={"/case"}
-                    render={props => (
-                      <Dashboard
-                        {...props}
-                        loggedInStatus={this.state.loggedInStatus}
-                        User={this.state.user}
-                        loggedOut={this.handleLogout}
-                        animation={this.toggle}
-                      />
-                    )}
-                  />
-
-                  <Route
-                    exact
-                    path={"/viewcases"}
-                    render={props => (
-                      <Viewcase
-                      User={this.state.user}
-                        {...props}
-                      />
-                    )}
-                  />
-
+                  {routing.map(({Component:C,path},index) =>   
+                      <Route
+                      exact
+                      key={index}
+                      path={path}
+                      render={props => (
+                        <C
+                          {...props}
+                          handleLogin={this.handleLogin}
+                          animation={this.toggle}
+                          loggedInStatus={this.state.loggedInStatus}
+                          User={this.state.user}
+                        />
+                      )}
+                    />  
+                  )}
 
                 </Switch>
 
               </BrowserRouter>
 
-            </div>
-        );
-      }
-      else{
-        return (
-          <div className="app" >
-    
-            {this.state.on?a:null}
-    
-              <BrowserRouter>
-   
-    
-              <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
-                  <span className="navbar-toggler-icon"></span>
-                </button>
-                <div className="collapse navbar-collapse" id="navbarTogglerDemo01">
-                  <div className="navbar-brand"><div className="display-4">COURT CASE MANAGEMENT</div></div>
-                  <ul className="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <li className="nav-item active">
-                    <div className="nav-link"><Link to="/dash">Home</Link></div>
-                    </li>
-    
-                    <li className="nav-item">
-                    <div className="nav-link"><Link to="/dash">My profile</Link></div>
-                    </li>
-    
-                    <li className="nav-item">
-                    <div className="nav-link"><Link to="/dash">History of hearings</Link></div>
-                    </li>
-    
-                    <li className="nav-item">
-                    <div className="nav-link" onClick={this.handleLogoutClick}>Logout</div>
-                    </li>
-                  </ul>
-    
-                </div>
-              </nav>
-    
-              <Switch>
-    
-              <Route
-                    exact
-                    path={"/dash"}
-                    render={props => (
-                      <SelectClient
-                        {...props}
-                        loggedInStatus={this.state.loggedInStatus}
-                        User={this.state.user}
-                        loggedOut={this.handleLogout}
-                        animation={this.toggle}
-                      />
-                    )}
-                  />
-  
-    
-              </Switch>
-              </BrowserRouter>
-          
           </div>
-        );
-      }
-    }
+      ); 
   }
+  
 }
-
-
 
 export default App;

@@ -1,5 +1,3 @@
-//https://codeforgeek.com/manage-session-using-node-js-express-4/
-//req.params.id
 let Client = require('../models/client.model');
 let Case = require('../models/case.model');
 let Lawyer = require('../models/lawyer.model');
@@ -151,12 +149,14 @@ exports.add_lawyer = function(req, res) {
 
 exports.get_case = function(req, res) {
 	
-    Case.find({client_id:req.params.id},function(err, response) {
-        if (err) {
-            console.log(err);
-        } else {
-            res.json(response);
-        }
+    Case.find({client_id:req.params.id})
+    .populate({path:'accepted_lawyer',model: 'Lawyer'})
+    .populate({path:'lawyer_id',model: 'Lawyer'})
+    .then(function(dbProduct) {
+      res.json(dbProduct);
+    })
+    .catch(function(err) {
+      res.json(err);
     });
 };
 

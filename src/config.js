@@ -1,2 +1,4 @@
-export const SERVER_URL = "https://safe-taiga-19842.herokuapp.com"
-export const SOCKETIO_SERVER ="https://safe-taiga-19842.herokuapp.com"
+export const SERVER_URL = "http://localhost:4000"
+
+export const SOCKETIO_SERVER ="http://localhost:4000"
+// https://safe-taiga-19842.herokuapp.com
